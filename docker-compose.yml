@@ -1,8 +1,10 @@
 services:
   app:
-    image: httpd:latest
+    build: 
+      dockerfile: dockerfile
+      context: .
     ports:
-      - 8000:80
+      - 8000:8000
     volumes:
       - ./html:/usr/local/apache2/htdocs
 
