@@ -5,6 +5,8 @@ RUN apt update
 RUN apt install -y  nano \ 
                     php8.4 \
                     php8.4-xml \ 
+                    php8.4-mbstring \
+                    php8.4-mysql \
                     zip \ 
                     curl \ 
                     git
@@ -20,18 +22,10 @@ RUN curl -fsSL https://bun.sh/install | bash
 
 RUN cp /root/.bun/bin/bun /usr/local/bin/bun
 
-RUN git clone https://github.com/Kellerrel/blog.git
+RUN mkdir blog
+
+COPY ./entrypoint.sh /entrypoint.sh
 
 WORKDIR /blog
 
-RUN composer install
-
-RUN bun i
-
-RUN bun run build
-
-RUN cp .env.example .env
-
-RUN php artisan key:generate
-
-CMD [ "php", "artisan", "serve", "--host=0.0.0.0"]
+ENTRYPOINT [ "sh", "/entrypoint.sh" ]
